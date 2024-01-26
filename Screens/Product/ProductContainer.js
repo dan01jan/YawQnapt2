@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator, FlatList } from 'react-native'
-import { Container, Icon, Heading, Input, Text, NativeBaseProvider, extendTheme } from "native-base";
+import { Container, Icon, Heading, Input, Text, NativeBaseProvider, extendTheme, VStack } from "native-base";
 import ProductList from "./ProductList";
 import { Ionicons } from "@expo/vector-icons";
 const data = require('../../assets/data/products.json')
@@ -39,7 +39,6 @@ const ProductContainer = () => {
                 </View>
             </Container>
         </NativeBaseProvider>
-
     )
 }
 
