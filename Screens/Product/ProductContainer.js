@@ -5,7 +5,7 @@ import ProductList from "./ProductList";
 import { Ionicons } from "@expo/vector-icons";
 import SearchedProduct from "./SearchedProduct";
 const data = require('../../assets/data/products.json')
-
+const productCategories = require('../../assets/data/categories.json')
 const newColorTheme = {
     brand: {
         900: "#8287af",
@@ -16,10 +16,15 @@ const newColorTheme = {
 const theme = extendTheme({ colors: newColorTheme });
 var { height } = Dimensions.get('window')
 import Banner from "../../Shared/Banner";
+import CategoryFilter from "./CategoryFilter";
 const ProductContainer = () => {
     const [products, setProducts] = useState([])
     const [productsFiltered, setProductsFiltered] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [active, setActive] = useState([]);
+    const [initialState, setInitialState] = useState([])
     const [focus, setFocus] = useState();
+
     const searchProduct = (text) => {
         setProductsFiltered(
             products.filter((i) => i.name.toLowerCase().includes(text.toLowerCase()))
@@ -36,11 +41,17 @@ const ProductContainer = () => {
     useEffect(() => {
         setProducts(data);
         setProductsFiltered(data);
+        setCategories(productCategories)
+        setActive(-1)
+        setInitialState(data);
         setFocus(false)
         return () => {
             setProducts([])
             setProductsFiltered([]);
             setFocus()
+            setCategories([])
+            setActive()
+            setInitialState();
         }
     }, [])
     return (
@@ -72,6 +83,9 @@ const ProductContainer = () => {
                     <View style={styles.container}>
                         <View style={styles.listContainer} >
                             <Banner />
+                            <View >
+                                <CategoryFilter categories={categories} />
+                            </View>
                             <FlatList
                                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                                 numColumns={2}
