@@ -1,119 +1,66 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ActivityIndicator, FlatList, Dimensions } from 'react-native'
-import { Container, Icon, Heading, Input, Text, NativeBaseProvider, extendTheme, VStack, Center } from "native-base";
-import ProductList from "./ProductList";
-import { Ionicons } from "@expo/vector-icons";
-import SearchedProduct from "./SearchedProduct";
-const data = require('../../assets/data/products.json')
+import React from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, FlatList, View } from 'react-native';
+import { Badge, Text, VStack, Divider, HStack } from 'native-base';
 
-const newColorTheme = {
-    brand: {
-        900: "#8287af",
-        800: "#7c83db",
-        700: "#b3bef6",
-    },
-};
-const theme = extendTheme({ colors: newColorTheme });
-var { height } = Dimensions.get('window')
-import Banner from "../../Shared/Banner";
-const ProductContainer = () => {
-    const [products, setProducts] = useState([])
-    const [productsFiltered, setProductsFiltered] = useState([]);
-    const [focus, setFocus] = useState();
-    const searchProduct = (text) => {
-        setProductsFiltered(
-            products.filter((i) => i.name.toLowerCase().includes(text.toLowerCase()))
-        )
-    }
-    const openList = () => {
-        setFocus(true);
-    }
-
-    const onBlur = () => {
-        setFocus(false);
-    }
-
-    useEffect(() => {
-        setProducts(data);
-        setProductsFiltered(data);
-        setFocus(false)
-        return () => {
-            setProducts([])
-            setProductsFiltered([]);
-            setFocus()
-        }
-    }, [])
+const CategoryFilter = (props) => {
+    console.log(props.categories)
     return (
-        <NativeBaseProvider
-            theme={theme}
+        <ScrollView
+            bounces={true}
+            horizontal={true}
+            style={{ backgroundColor: "#f2f2f2" }}
         >
-            <Center>
+            <VStack space={4} divider={<Divider />} w="100%">
+                <HStack justifyContent="space-between">
+                    <TouchableOpacity
+                        key={1}
+                        onPress={() => {
+                            props.categoryFilter('all'), props.setActive(-1)
+                        }}
+                    >
+                        <Badge style={[styles.center, { margin: 4 },
+                        props.active === -1 ? styles.active : styles.inactive]} colorScheme="info" >
+                            <Text style={{ color: 'black' }}>all</Text>
+                        </Badge>
+                    </TouchableOpacity>
+                    {props.categories.map((item) => (
+                        <TouchableOpacity
+                            key={item._id.$oid}
+                            onPress={() => {
+                                props.categoryFilter(item._id.$oid),
+                                    props.setActive(props.categories.indexOf(item))
+                            }}
+                        >
+                            <Badge
+                                style={[styles.center,
+                                { margin: 5 },
+                                props.active == props.categories.indexOf(item) ? styles.active : styles.inactive
+                                ]}
+                            >
+                                <Text style={{ color: 'white' }}>{item.name}</Text>
+                            </Badge>
+                        </TouchableOpacity>
+                    ))}
+                </HStack>
+            </VStack>
 
-                <VStack w="100%" space={5} alignSelf="center">
+        </ScrollView>
 
-                    <Input placeholder="Search"
-                        onFocus={openList}
-                        onChangeText={(text) => searchProduct(text)}
-                        variant="filled"
-                        width="100%"
-                        borderRadius="10"
-                        py="1"
-                        px="2"
-                        InputLeftElement={<Icon ml="2" size="4" color="gray.400" as={<Ionicons name="search" />} />}
-                        InputRightElement={focus === true ? <Icon ml="2" size="4" color="gray.400" as={<Ionicons name="close" size="12" color="black" onPress={onBlur} />} /> : null}
-                    />
-                </VStack>
-                {focus === true ? (
-                    <SearchedProduct
-                        productsFiltered={productsFiltered}
-                    />
-                ) : (
-
-                    <View style={styles.container}>
-                        <View style={styles.listContainer} >
-                            <Banner />
-                            <FlatList
-                                columnWrapperStyle={{ justifyContent: 'space-between' }}
-                                numColumns={2}
-                                data={products}
-                                renderItem={({ item }) => <ProductList key={item.brand} item={item} />}
-                                keyExtractor={item => item.name}
-                            />
-                        </View>
-                    </View>
-                )}
-                {/* <View style={{ marginTop: 80 }} >
-                    <FlatList
-                        columnWrapperStyle={{ justifyContent: 'space-between' }}
-                        numColumns={2}
-                        data={products}
-                        renderItem={({ item }) => <ProductList key={item.id} item={item} />}
-                        keyExtractor={item => item.name}
-                    />
-                </View> */}
-            </Center>
-        </NativeBaseProvider>
 
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexWrap: "wrap",
-        backgroundColor: "gainsboro",
-    },
-    listContainer: {
-        height: height,
-        flex: 1,
-        flexDirection: "row",
-        alignItems: "flex-start",
-        flexWrap: "wrap",
-        backgroundColor: "gainsboro",
-    },
     center: {
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    active: {
+        backgroundColor: '#03bafc'
+    },
+    inactive: {
+        backgroundColor: '#a0e1eb'
     }
-});
+})
 
-export default ProductContainer;
+export default CategoryFilter;
