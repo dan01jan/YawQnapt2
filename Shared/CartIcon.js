@@ -1,41 +1,39 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Badge, Text } from "native-base";
-import { useSelector, } from 'react-redux'
-
-
+import { StyleSheet, View } from "react-native";
+import { Text } from "native-base";
+import { useSelector } from 'react-redux';
 
 const CartIcon = () => {
-    const cartItems = useSelector(state => state.cartItems)
+  const cartItems = useSelector(state => state.cartItems);
+
   return (
     <>
       {cartItems.length ? (
-        <Badge style={styles.badge}>
-          <Text style={styles.text}>{cartItems.length}</Text>
-        </Badge>
+        <View style={styles.badgeContainer}>
+          <Text style={styles.text} children={`${cartItems.length}`} />
+        </View>
       ) : null}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-    badge: {
-      width: 20,
-      position: "absolute",
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      alignContent: "left",
-      top: -8,
-      right: -18,
-    },
-    text: {
-      fontSize: 12,
-      width: 100,
-      fontWeight: "bold",
-      color: "red"
-      
-    },
-  })
-  
-  export default CartIcon
+  badgeContainer: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "red",
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    top: -4,
+    right: -18,
+  },
+  text: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "white",
+  },
+});
+
+export default CartIcon;

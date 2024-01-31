@@ -37,15 +37,16 @@ const Main = () => {
                 name="Cart"
                 component={Cart}
                 options={{
-                    tabBarIcon: ({color}) => {
-                        return <><Icon
-                            name="shopping-cart"
-                            style={{position: "relative"}}
-                            color={color}
-                            size={30}
-
-                        /><CartIcon /></>
-                    }
+                    tabBarIcon: ({ color }) => (
+                        <View style={{ position: 'relative' }}>
+                            <Icon
+                                name="shopping-cart"
+                                color={color}
+                                size={30}
+                            />
+                            <CartIcon />
+                        </View>
+                    ),
                 }}
             />
 
