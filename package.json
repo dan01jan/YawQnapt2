@@ -24,7 +24,11 @@
     "react-native-safe-area-context": "^4.8.2",
     "react-native-svg": "^14.1.0",
     "react-native-swiper": "^1.6.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "react-redux": "^9.1.0",
+    "redux": "^5.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
